@@ -1,20 +1,25 @@
 import React, { Component } from 'react';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
+import ListGroup from 'react-bootstrap/ListGroup';
+import Card from 'react-bootstrap/Card';
+import "../../App.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Spinner from 'react-bootstrap/Spinner';
+
 
 class CalendarInput extends Component {
 
   constructor (props) {
     super(props);
     const userActivity = this.props.location.state.userActivity.map((activity) => {
-      let start_time = activity['start_time'];
-      let end_time = activity['end_time'];
-      const start = new Date(start_time.slice(0, start_time.length - 2));
-      const end = new Date(end_time.slice(0, end_time.length - 2));
-      activity['start_time_epoch'] = new Date(start.getFullYear(), start.getMonth(), start.getDate(), 0, 0, 0).getTime();
-      activity['end_time_epoch'] = new Date(end.getFullYear(), end.getMonth(), end.getDate(), 0, 0, 0).getTime();
-      return activity
+    let start_time = activity['start_time'];
+    let end_time = activity['end_time'];
+    const start = new Date(start_time.slice(0, start_time.length - 2));
+    const end = new Date(end_time.slice(0, end_time.length - 2));
+    activity['start_time_epoch'] = new Date(start.getFullYear(), start.getMonth(), start.getDate(), 0, 0, 0).getTime();
+    activity['end_time_epoch'] = new Date(end.getFullYear(), end.getMonth(), end.getDate(), 0, 0, 0).getTime();
+    return activity
     });
     this.state = {
       startDate: new Date(),
@@ -22,9 +27,8 @@ class CalendarInput extends Component {
       showActivity: this.dateSelectedHandler(new Date(), userActivity)
     };
     this.handleChange = this.handleChange.bind(this);
-    this.onFormSubmit = this.onFormSubmit.bind(this);
+    this.searchHandler = this.searchHandler.bind(this);
   }
-
   handleChange(date) {
     this.setState({
       startDate: date
@@ -43,47 +47,47 @@ class CalendarInput extends Component {
         matchingActivity.push(activity);
       }return [];
     });
-    const style={
-      color: "red"
-    }
+ 
     const showActivity = matchingActivity.map((activity, index) => {
-      return <div style={style} key={index}>{activity.start_time} {activity.end_time}</div>
+      return (<ListGroup.Item key={index}><p>Start time: {activity.start_time} End time: {activity.end_time}</p>
+             </ListGroup.Item>)
     });
-    console.log(matchingActivity);
     if (showActivity.length){
-      return showActivity;
+      return <Card className="card" style={{width: '39rem'}} >{showActivity}</Card>
       }
       else{
-        return <div style={style}>No Activity on these Dates</div>
+        return <Card className="card" style={{width: '18rem'}}>No Activity on these Dates</Card>
       }
   }
-
-  onFormSubmit(e) {
+  searchHandler(e) {
     e.preventDefault();
-    this.setState({showActivity: this.dateSelectedHandler(this.state.startDate, this.state.userActivity)});
-    
+    setTimeout(() => {
+      this.setState({showActivity: this.dateSelectedHandler(this.state.startDate, this.state.userActivity)});
+    }, 500);
+    this.setState({showActivity: <Spinner animation="border" variant="danger" />});
   }
  
   render() {
-
     return (
-      <div>
-      <form onSubmit={ this.onFormSubmit }>
-        <div className="form-group">
+      <div class="text-center" style={{padding: "100px"}}>
+        <div class="text-center">
           <DatePicker
               selected={ this.state.startDate }
               onChange={ this.handleChange }
               name="startDate"
+              calendarClassName="rasta-stripes"
+              todayButton="Today"
+              showMonthDropdown
+              showYearDropdown
               dateFormat="MM/dd/yyyy"
           />
-          <button className="btn btn-primary">Search</button>
+          <button className="btn btn-primary" onClick={this.searchHandler}>Search</button>
         </div>
-      </form>
-      {this.state.showActivity}
+        <br/>
+          {this.state.showActivity}
       </div>
     );
-  }
-  
+  };
 }
 
 export default CalendarInput;
