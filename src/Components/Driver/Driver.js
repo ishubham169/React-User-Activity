@@ -3,6 +3,7 @@ import '../../App.css';
 import resp from '../../Response.json';
 import User from '../Users/User/User';
 import Button from 'react-bootstrap/Button';
+import ListGroup from 'react-bootstrap/ListGroup';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 class Driver extends Component{
@@ -35,18 +36,18 @@ class Driver extends Component{
     let users = null;
     if(this.state.showUsers){
       users = this.state.users.map((user, index) => {
-        return <User key = {index}
+        return <ListGroup> 
+        <User key = {index}
                      userName={user.real_name} 
                      userLocation={user.tz} 
                      userActivity={user.activity_periods}
                      showUser={user.showUser}
                      userId ={user.id}
                      clickHandler={() => this.clickHandler(user.id)} />
+                </ListGroup>
       })
     }
-const style = {padding: "210px",
-margin: "110px",
-}
+
   return (
     <div className="Button">
       <Button variant="primary"

@@ -1,6 +1,10 @@
 import React, {Component} from 'react';
 import './User.css';
 import { Link } from "react-router-dom";
+import ListGroup from 'react-bootstrap/ListGroup';
+import Button from 'react-bootstrap/Button';
+import Card from 'react-bootstrap/Card';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 class User extends Component {
 
@@ -9,8 +13,7 @@ class User extends Component {
         userId: "",
         userName: "",
         userLocation: "",
-        userActivity: [],
-        showCalendar: false
+        userActivity: []
     }
 
     onMouseEnter(e) {
@@ -19,46 +22,46 @@ class User extends Component {
       onMouseLeave(e) {
         e.target.style.background = 'green';
       }
-    click = () => {
-        this.setState({showCalendar: !this.state.showCalendar})
-    }
     
     render() {
         const style = {
             padding: "5px",
             margin: "15px",
-            backgroundColor: "green",
+            backgroundColor: "white",
             cursor: "pointer",
             textalign: "center"
         }
         let data = null;
-        if(this.state.showCalendar){
-                data = <Link to="/activity">
-                Login
-              </Link>
-        }
-        else{
-        let user = <div onClick={this.props.clickHandler}>{this.props.userName}</div>
+        let buttons = <div>
+            <Button onClick={this.props.clickHandler}  variant="primary" size="sm">Expand</Button>
+            <Link to={{pathname: '/activity', state: {userActivity: this.props.userActivity}}}><Button variant="primary" size="sm">Search Activity</Button></Link>
+        </div>
+        let user = <div>
+            {buttons}
+        <Card style={{color: "red"}} >
+            <Card.Header> 
+                {this.props.userName}
+                </Card.Header>
+            </Card></div>
         if(this.props.showUser){
             let userActivity = this.props.userActivity.map((activity, index) => {
-                return <div key={index}><p>{activity.start_time}  {activity.end_time}</p></div>
+                return <ListGroup.Item key={index}><p>Start time: {activity.start_time} End time: {activity.end_time}</p></ListGroup.Item>
             });
             user = <div>
-                     <div onClick={this.props.clickHandler}>{this.props.userName}</div>
-                     <div>{this.props.userLocation}</div>
+                {buttons}
+                <Card>
+                     <ListGroup.Item style={{color: "red"}}>
+                     {this.props.userName}</ListGroup.Item>
+                     <ListGroup.Item>{this.props.userLocation}</ListGroup.Item>
                      {userActivity}
-                     <Link to={{
-                            pathname: '/activity',
-                            state: {
-                                userActivity: this.props.userActivity
-                            }
-                            }}>Show Activity</Link>
+                   </Card>
                    </div>
-        }
-            data = <div style={style} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave}>
+        }    data = <Card style={style}>
+                           <div>
                            {user}
-                   </div>
-        }
+                           </div>
+                   </Card>
+        
         return(
             <div>{data}</div>  
         );
