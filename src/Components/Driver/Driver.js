@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import '../../App.css';
 import resp from '../../Response.json';
-import User from '../Users/User/User';
+import User from '../User/User';
 import Button from 'react-bootstrap/Button';
 import ListGroup from 'react-bootstrap/ListGroup';
 import 'bootstrap/dist/css/bootstrap.min.css';
