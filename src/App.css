@@ -1,3 +1,17 @@
+.Background {
+  position: relative;
+  background: url("./img/backgroung.jpeg") no-repeat;
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+  margin-top: -5px;
+  margin-bottom: -50px;
+}
+.Button {
+  position: relative;
+  margin-top: -5px;
+  margin-bottom: -50px;
+}
 .App {
   text-align: center;
 }
