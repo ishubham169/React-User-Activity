@@ -3,7 +3,6 @@ import './App.css';
 import Driver from './Components/Driver/Driver';
 import CalendarInput from './Components/CalendarInput/CalendarInput';
 import { BrowserRouter as Router, Route } from "react-router-dom";
-import Footer from './Components/Footer/Footer';
 
 class App extends Component{
 
@@ -14,7 +13,6 @@ class App extends Component{
         <Route exact path="/" component={Driver} />
         <Route exact path="/activity" component={CalendarInput} />
       </Router>
-      <Footer/>
     </div>
   );
   }
